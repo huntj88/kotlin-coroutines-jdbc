@@ -59,10 +59,8 @@ fun <T> ResultSet.map(parseRow: (ResultSet) -> T): List<T> = this.mapNotNull { p
 
 fun <T> ResultSet.mapNotNull(parseRow: (ResultSet) -> T?): List<T> {
     val list = mutableListOf<T>()
-    if (this.first()) {
-        do {
-            parseRow(this)?.also { list.add(it) }
-        } while (this.next())
+    while (this.next()) {
+        parseRow(this)?.also { list.add(it) }
     }
     return list
 }
