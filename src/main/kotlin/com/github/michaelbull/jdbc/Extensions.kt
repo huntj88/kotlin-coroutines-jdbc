@@ -15,7 +15,7 @@ suspend fun <T> withRepositoryContext(
     block: suspend CoroutineScope.() -> T
 ): T = withContext(
     context = Dispatchers.IO + CoroutineDataSource(dataSource),
-    block = block
+    block = { transaction { block() } }
 )
 
 fun <T> Connection.executeParameterizedQuery(
